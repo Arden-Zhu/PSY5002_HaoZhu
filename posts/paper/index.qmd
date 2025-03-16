@@ -1,0 +1,605 @@
+---
+title: "Paper"
+author: "Hao Zhu"
+date: "2025-03-15"
+categories: [scripts]
+---
+
+(Title)
+
+# Introduction
+
+Human learning hinges on the ability to recognize and interpret predictive cues in the environment. Classic work in associative learning has shown that when two or more cues consistently appear together, their interactions can be competitive—where a dominant cue “blocks” another from acquiring associative strength—or facilitative, in which cues mutually boost each other’s predictive value. These phenomena play a fundamental role not only in understanding how people learn cause-effect relationships but also in broader psychological processes such as selective attention, cognitive inference, and clinical outcomes related to anxiety and stress. In the dissertation by Alhazmi (2022), a series of experiments explored the interplay between these different styles of cue interaction—particularly examining why some individuals tend toward facilitative (or “noncompetitive”) learning while others exhibit more canonical patterns of cue competition. The present paper focuses on Experiment 4 of that work, in which I conducted a detailed data analysis to investigate individual differences in cue interaction style (competitive vs. facilitative) and whether their styles are related to anxiety, depression, and stress measures. By leveraging advanced statistical techniques acquired in my independent research course, I re-examined the data to (add details later).
+
+This introductory section provides an overview of the theoretical basis for cue interaction, including both classical associative models and more contemporary accounts that incorporate higher-order cognitive processes.
+
+Theoretical accounts of cue interaction have historically emphasized how cues compete for associative strength, a process often referred to as “cue competition.” Early associative models (e.g., Bush & Mosteller, 1951, 1955) proposed that the predictive value of any given cue depends solely on its individual correlation with the outcome. This view was challenged by the influential Rescorla-Wagner model (Rescorla & Wagner, 1972), which introduced the concept of a summed prediction error. According to this model, cues presented in compound share a limited pool of associative strength; a cue that is already a strong predictor of an outcome will “block” new cues from acquiring substantial associative strength (Kamin, 1968; Rescorla & Wagner, 1972). Later theories, particularly attentional models (Mackintosh, 1975; Pearce & Hall, 1980), posited that competition stems not just from summed prediction errors but also from changes in the amount of attention allocated to each cue.
+
+However, accumulating evidence suggests that cues can also facilitate one another—rather than compete—under certain circumstances (Bouton et al., 1987; Durlach & Rescorla, 1980). Such “cue facilitation” occurs when the presence of a well-established cue enhances the predictive value of a novel cue (Batsell Jr & Batson, 1999). Models addressing both competition and facilitation often incorporate within-compound associations—that is, direct links formed between cues presented together. In the Sometimes-Competing Retrieval (SOCR) model (Stout & Miller, 2007), these within-compound associations may either suppress or augment responding, depending on a “switching operator” that governs whether indirect cue activation will interfere with or bolster responding. Similarly, Pineño’s (2007) extension of the Rescorla-Wagner model assumes that a cue’s novelty moderates how strongly it draws on within-compound associations for its response—leading sometimes to competition, sometimes to facilitation. These dual-process models thus capture both the classic competitive phenomena and the growing body of evidence for cooperative, or facilitative, interactions among cues.
+
+In addition to these associative mechanisms, propositional and higher-order reasoning can also influence cue interactions. According to propositional accounts, human learners form cognitive inferences about causal relationships, rather than simply accumulating associative strength through trial-by-trial error signals (Mitchell et al., 2009). Thus, learners may explicitly reason that “if Cue A by itself predicts the outcome, and Cue A together with Cue X produces no change in the outcome, then Cue X is not causally relevant,” leading to blocking-like effects (Cheng & Novick, 1990; De Houwer & Beckers, 2003). Higher-order cognition may similarly generate facilitative effects if learners reason that a known predictor could boost the effectiveness of other cues present in the same compound. These propositional processes need not replace traditional associative mechanisms; indeed, both conscious inference and lower-level associative learning may jointly shape how cues compete or facilitate one another under varying task conditions (Mitchell et al., 2009).
+
+Another theoretical perspective on cue interaction revolves around **within-compound associations**, which are direct links formed between cues that are presented simultaneously. Rather than focusing exclusively on how each cue associates with an outcome, this view emphasizes that cues can become associated with each other—sometimes resulting in one cue retrieving the memory of its partner, which in turn activates the representation of the shared outcome (Melchers et al., 2004; Miller & Matzel, 1988). This mechanism can explain why, for instance, reinforcing one element of a compound (A) in a later stage may retrospectively weaken or enhance responses to the other (X), even when X is not explicitly retrained—an effect not easily handled by standard, purely competitive models. Recent formulations, such as Pineño’s (2007) model or the Sometimes-Competing Retrieval (SOCR) model (Stout & Miller, 2007), specifically integrate within-compound associations to account for both **competitive** interactions (when indirect retrieval suppresses responding) and **facilitative** interactions (when indirect retrieval augments responding). By focusing on how cues become interconnected, these approaches help clarify why certain learners show noncompetitive or “excessive” associative patterns that can, in clinical populations, manifest as overgeneralized fear or heightened sensitivity to redundant cues.
+
+Taken together, these perspectives underscore how cue interaction can manifest in both competitive and facilitative patterns, shaped by propositional reasoning as well as by within-compound associations. In the fourth experiment of Alhazmi’s (2022) dissertation, these themes converge in a paradigm specifically designed to capture variability in cue interaction styles under carefully controlled conditions. The next sections detail how I reanalyzed the dataset from this experiment, leveraging advanced statistical methods to explore (1) whether individual shows differences in cue competition or facilitation, and (2) how these differences might correlate with measures of anxiety, depression, and stress.
+
+**Description of the Fourth Experiment**
+
+Experiment 4 was developed to determine how within-compound associations might tilt cue interaction toward competitive or facilitative patterns, and whether these individual tendencies align with varying levels of anxiety, depression, and stress. The experiment utilized a two-stage training procedure—initial training followed by compound trials—culminating in a reversal manipulation that differed between two groups. What follows is a more detailed account of the procedure:
+
+**Participants and Design.**
+
+Over 400 adults were recruited online (via Prolific) and randomly assigned to one of two groups: Control (no outcome reversal) or Experimental (outcome reversal).
+
+In both groups, each participant was exposed to two cues (A and B) initially reinforced with coins or bomb outcomes, respectively, so that A reliably predicted a positive outcome (coins) while B reliably predicted a negative outcome (bomb).
+
+Stage 1 (Initial Training).
+
+Cues A and B were each presented multiple times (e.g., eight trials per cue). Consistent with the design, Cue A was always followed by the coin outcome, while Cue B was always followed by the bomb outcome. This stage established a baseline expectation that A = coins and B = bomb.
+
+Stage 2 (Compound Training).
+
+Both groups next received extended training over several blocks (e.g., seven blocks). These blocks included the original cues (A→coins, B→bomb) plus newly introduced compound cues:  AW (A paired with a novel cue W), 75% resulting in coins and 25% in bombs.
+
+BZ (B paired with a novel cue Z), 25% resulting in coins and 75% in bombs.
+
+AX (A with novel cue X) and BY (B with novel cue Y), each reinforced 50% of the time with coins.
+
+These compound trials tested how novel cues (W, X, Y, Z) might “inherit” more or less coin or bomb expectancy from their better-established partners (A or B). Of particular interest were X and Y, the target cues, since they were paired with opposite outcomes on half the trials and thus could trend toward coins or bombs depending on how participants integrated the companion cue’s history.
+
+Stage 3 (Reversal Manipulation).
+
+At this point, the Experimental group received a reversal of outcomes for Cues A and B (i.e., A became bomb, B became coins), while the Control group continued with the same contingencies (A = coins, B = bomb).
+
+The logic behind this manipulation was to identify whether people who relied on strong within-compound associations (especially for cues X or Y) would update the predictive value of those target cues more drastically than those who did not depend on within-compound links.
+
+Stage 4 (Final Probe Trials).
+
+Both groups completed additional probe trials in which Cues A, B, X, and Y were tested individually without explicit feedback, to assess how much the earlier reversal or continued training influenced each cue’s perceived outcome.
+
+**Dependent Variables**
+
+1.  **Distance.** A key behavioral measure was how close participants positioned themselves (or their avatar) to the anticipated outcome location on each trial. By standing near the center when they predicted coins (to maximize reward) or retreating toward the edge if they expected a bomb (to avoid penalty), participants generated a continuous “distance” metric that captured their outcome expectations in real time. Shorter distances indicated a higher belief in receiving coins, whereas larger distances pointed to a strong expectation of bombs.
+
+2.  **Ratings.** In addition to the distance measure, participants periodically provided explicit numeric ratings of how likely they believed it was that the cue in question predicted coins (as opposed to bombs). After each trial—or at defined “probe” trials—participants were shown a rating scale (for instance, 0 to  10) and indicated how confident they were that the current cue would lead to a coin outcome. These ratings supplemented the distance data by revealing learners’ conscious expectations about each cue’s predictive value.
+
+**Anxiety, Depression, and Stress Measures.**
+
+After the learning task, participants completed the DASS questionnaire (Lovibond, 1995), yielding subscales for depression, anxiety, and stress. These scores were later correlated with each participant’s “cue interaction index” (the degree to which X vs. Y showed competition or facilitation), testing the hypothesis that attenuated competition (i.e., facilitation) might be linked to higher clinical-risk traits such as anxiety or chronic stress.
+
+# Data Analysis
+
+## Data Preparation
+
+Load data and packages
+
+```{r}
+if(!require('tidyverse')) {
+  # install.packages('tidyverse')
+  library(tidyverse)
+}
+if(!require('tidyr')) {
+  #install.packages('tidyr'); 
+  library(tidyr)
+}
+if(!require('ggplot2')) {
+  #install.packages('ggplot2'); 
+  library(ggplot2)
+}
+if(!require('gridExtra')) {
+  #install.packages('gridExtra'); 
+  library(gridExtra)
+}
+
+library(corrplot)
+```
+
+Import Data
+
+```{r}
+df_game <- read_csv('../../data/exp4-raw.csv', show_col_types=FALSE)
+df_quest <- read_csv('../../data/exp4-raw-quest.csv', show_col_types=FALSE)
+df_attention <- read_csv('../../data/exp4-attention.csv', show_col_types=FALSE)
+```
+
+We used many filters to exclude bad data - Here is the data from the platform itself. Either people who did not complete the whole thing, or they were too fast for their data to be meaningful, or they skipped all the ratings/probes, all kinds of reasons.
+
+```{r}
+bads <- c('594fa525f61b8e00016af178', '5a90460d1eda41000135f918',
+       '5de301515253b03390043d12', '5e87ade2da382941f3f1a621',
+       '5ed377271691ea000c548cb0', '5f3e8506cb479c0a96cf4aac',
+       '5f8f95862a4ed820d9b071ac', '60b671ce563975c4907b9c04')
+df_game = df_game %>% filter(!subjectID %in% bads)
+```
+
+We also have participants complete a survey called DAAS in which they answer a couple of questions and then we extract their depression, anxiety and stress scores. As you can see, we have these dimensions mapped to questions and in the following code we just add up all the scores in each dimension.
+
+```{r}
+# Define the question categories
+depression <- c(3, 5, 10, 13, 16, 17, 21, 24, 26, 31, 34, 37, 38)
+anxiety <- c(2, 4, 7, 9, 15, 19, 20, 23, 25, 28, 30, 36, 40)
+stress <- c(1, 6, 8, 11, 12, 14, 18, 22, 27, 29, 32, 33, 35, 39)
+
+# Create column names for each category
+depression_cols <- paste0('DASS_', depression)
+anxiety_cols <- paste0('DASS_', anxiety)
+stress_cols <- paste0('DASS_', stress)
+
+# Sum the columns for each category and add to df_quest
+df_quest <- df_quest %>%
+  mutate(
+    depression = rowSums(select(., all_of(depression_cols)), na.rm = TRUE),
+    anxiety = rowSums(select(., all_of(anxiety_cols)), na.rm = TRUE),
+    stress = rowSums(select(., all_of(stress_cols)), na.rm = TRUE)
+  )
+
+# Drop columns that start with 'DASS'
+df_quest <- df_quest %>%
+  select(-starts_with('DASS'))
+
+```
+
+```{r}
+# focus on probe data
+df_prp_raw <- df_game %>% filter(outcome == 'probe')
+
+# check invalid ratings
+df_prp_raw %>%
+  filter(probeAns<0 | probeAns>1) %>%
+  select(subjectID) %>%
+  distinct()
+
+# we can use this to filter out those who have lots of missing ratings..
+missing <- df_prp_raw %>% 
+  group_by(subjectID) %>%
+  summarize(missing = mean(is.na(probeAns))) %>%
+  arrange(desc(missing))
+
+head(missing)
+```
+
+```{r}
+# here we also have issues with invalid ratings and we want to know how many bad data out there
+invalidRatings <- missing %>% filter(missing >= 0.5) %>% pull(subjectID)
+df_prp_raw %>% 
+  filter(subjectID %in% invalidRatings) %>% 
+  group_by(group) %>%
+  summarize(n = n_distinct(subjectID))
+
+```
+
+```{r}
+# filter them out...
+df_game <- df_game %>% filter(!subjectID %in% invalidRatings)
+df_prp_raw <- df_game %>% filter(outcome == 'probe')
+
+n_distinct(df_prp_raw$subjectID)
+```
+
+How many participants in each group?
+
+```{r}
+df_prp_raw %>%
+  group_by(group) %>%
+  summarize(n = n_distinct(subjectID))
+```
+
+## Start of the analysis
+
+```{r}
+#df_trn_raw <- df_game %>% filter(outcome != 'probe')
+df_prp_raw <- df_game %>% filter(outcome == 'probe')
+```
+
+We want to use an average of pre reversal and post reversal. We select 6, 7,8 for pre-reversal baseline and 10,11,12 for post reversal. Note that we also have 6 but we skip it because participant see ratings for first time and they are figuring it out.
+
+```{r}
+df_prp_focus <- df_prp_raw %>%
+  filter(rep %in% c(6, 7, 8, 10, 11, 12)) %>%
+  mutate(rep = recode(rep, `6` = 'before', `7` = 'before', `8` = 'before', `10` = 'after', `11` = 'after', `12` = 'after')) 
+
+df_prp <- df_prp_focus %>%
+  group_by(subjectID, cue, rep) %>%
+  summarize(probeAns = mean(probeAns, na.rm = TRUE),
+            distance = mean(distance, na.rm = TRUE), .groups = 'drop')
+
+head(df_prp)
+```
+
+## Stimulus
+
+```{r}
+# shapes and sounds
+# symbol should be unique for each subject and cue
+df_prp_focus %>%
+  filter( cue %in% c("X", "Y")) %>%
+  group_by(subjectID, cue) %>%
+  summarise( ns = n_distinct(shape), nd = n_distinct(sound), .groups = "drop") %>%
+  filter( ns > 1 | nd > 1) 
+  
+```
+
+```{r}
+df_stimuls <- df_prp_focus %>%
+  filter( cue %in% c("X", "Y")) %>%
+  group_by(subjectID, cue) %>%
+  summarise( shape = first(shape), sound = first(sound), .groups = "drop") %>%
+  mutate( stimulus_type = case_when(shape == 'empty' ~ 'sound', .default = 'shape'),
+          stimulus = case_when(stimulus_type == 'sound' ~ sound, .default = shape)) %>%
+  pivot_wider(names_from = cue, values_from = c(stimulus_type, stimulus), id_cols = subjectID, names_prefix = '') %>%
+  mutate( stimulus_type_X_Y = paste(stimulus_type_X, stimulus_type_Y, sep = "_"),
+          stimulus_X_Y = paste(stimulus_X, stimulus_Y, sep = "_"))
+
+```
+
+## Transform
+
+```{r}
+# some magic to pivot from long to wide (easier for analysis)
+df_prp_ratings_wide <- df_prp %>%
+  pivot_wider(names_from = cue, values_from = probeAns, id_cols = c(subjectID, rep))
+
+df_prp_distance_wide <- df_prp %>%
+  pivot_wider(names_from = cue, values_from = distance, id_cols = c(subjectID, rep))
+
+df_prp_ratings_wide <- df_prp_ratings_wide %>%
+  pivot_wider(
+    names_from = rep,        
+    values_from = -c(subjectID, rep), 
+    names_sep = "_"           
+  ) %>%
+  select(-c('AW_after', 'AX_after', 'BY_after', 'BZ_after', 'W_after', 'Z_after'))
+
+df_prp_distance_wide <- df_prp_distance_wide %>%
+  pivot_wider(
+    names_from = rep,
+    values_from = -c(subjectID, rep),
+    names_sep = "_"      
+  ) %>%
+  select(-c('AW_after', 'AX_after', 'BY_after', 'BZ_after', 'W_after', 'Z_after'))
+
+```
+
+```{r}
+# merge the two dataframes
+df_prp_both <- df_prp_ratings_wide %>%
+  left_join(df_prp_distance_wide, by = "subjectID", suffix = c('_rating', '_dist'))
+
+```
+
+We merge because we can get all information now including group and scores...
+
+```{r}
+df_prp_both <- df_prp_both %>%
+  left_join(df_quest, by = "subjectID") %>%
+  #left_join(df_attention, by = "subjectID") %>%
+  left_join(df_game %>% filter(outcome == 'probe') %>%
+              select(subjectID, group) %>%
+              distinct(), by = "subjectID") %>%
+  left_join(df_stimuls %>% 
+              select(subjectID, stimulus_type_X_Y, stimulus_X_Y), by = "subjectID")
+```
+
+Filter out the participants who did not rating the stimuli in a meaningful way
+
+```{r}
+df_prp_both <- df_prp_both %>% filter(A_before_rating > B_before_rating, 
+                                      A_before_rating > AW_before_rating,
+                                      AW_before_rating < BZ_before_rating, 
+                                      B_before_rating < BZ_before_rating,
+                                      )
+
+df_prp_both <- df_prp_both %>% filter(W_before_rating < Z_before_rating)
+
+```
+```{r}
+df_prp_both %>%
+  group_by(group) %>%
+  summarize(n = n_distinct(subjectID))
+```
+## Normalized Index
+
+```{r}
+ICI_Norm <- function(Y, X) (Y - X) / sqrt(Y^2 + X^2)
+
+df_prp_both <- df_prp_both %>%
+  mutate(ICI_YX_rating_pre_norm = ICI_Norm(Y_before_rating, X_before_rating),
+         ICI_YX_dist_pre_norm = - ICI_Norm(Y_before_dist, X_before_dist),
+         ICI_YX_rating_post_norm = ICI_Norm(Y_after_rating, X_after_rating),
+         ICI_YX_dist_post_norm = - ICI_Norm(Y_after_dist, X_after_dist),
+         post_pre_Rating_norm = ICI_YX_rating_post_norm - ICI_YX_rating_pre_norm,
+         post_pre_Dist_norm = ICI_YX_dist_post_norm - ICI_YX_dist_pre_norm)
+
+df_prp_both <- df_prp_both %>%
+  mutate(ICI_WZ_rating_pre_norm = ICI_Norm(W_before_rating, Z_before_rating),
+         ICI_WZ_dist_pre_norm = - ICI_Norm(W_before_dist, Z_before_dist))
+
+```
+
+### Distributions
+
+```{r, fig.width=13, fig.height=8}
+plot_distribution <- function(df, x, title) {
+  p <- ggplot(df, aes(x = !!sym(x))) +
+  geom_histogram(bins=10, fill = "grey40", color = "white") +
+  labs(title = title, x = "Scores", y = "") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, hjust = 0.5),
+    axis.title.x = element_text(size = 12),
+    axis.title.y = element_text(size = 12)
+  )
+  return(p)
+}
+
+p1 <- plot_distribution(df_prp_both, "ICI_YX_rating_pre_norm", "Pre-Rating ICI_YX")
+p2 <- plot_distribution(df_prp_both%>%filter(group == "control"), "ICI_YX_rating_post_norm", "Post-Rating for Control")
+p3 <- plot_distribution(df_prp_both%>%filter(group == "experimental"), "ICI_YX_rating_post_norm", "Post-Rating for Experiment")
+
+p4 <- plot_distribution(df_prp_both, "ICI_YX_dist_pre_norm", "Pre-distance ICI_YX")
+p5 <- plot_distribution(df_prp_both%>%filter(group == "control"), "ICI_YX_dist_post_norm", "Post-distance ICI_YX for Control")
+p6 <- plot_distribution(df_prp_both%>%filter(group == "experimental"), "ICI_YX_dist_post_norm", "Post-distance ICI_YX for Experiment")
+
+grid.arrange(p1, p2, p3, p4, p5, p6, ncol = 3)
+
+```
+
+```{r}
+
+p1 <- plot_distribution(df_prp_both, "ICI_WZ_rating_pre_norm", "Pre-Rating ICI_WZ")
+
+p4 <- plot_distribution(df_prp_both, "ICI_WZ_dist_pre_norm", "Pre-distance ICI_WZ")
+
+grid.arrange(p1, p4, ncol = 2)
+
+```
+
+```{r}
+# First plot: Scatter plot of ICI_YX_rating_pre_norm vs ICI_WZ_rating_pre_norm
+ggplot(df_prp_both, aes(x = ICI_YX_rating_pre_norm, y = ICI_WZ_rating_pre_norm)) +
+  geom_point() +
+  labs(title = "Scatter plot of ICI_YX vs ICI_WZ Ratings",
+       x = "ICI_YX Rating",
+       y = "ICI_WZ Rating") +
+  theme_minimal()
+
+# Second plot: Scatter plot of ICI_YX_dist_pre_norm vs ICI_WZ_dist_pre_norm
+ggplot(df_prp_both, aes(x = ICI_YX_dist_pre_norm, y = ICI_WZ_dist_pre_norm)) +
+  geom_point() +
+  labs(title = "Scatter plot of ICI_YX vs ICI_WZ Distances",
+       x = "ICI_YX Distance",
+       y = "ICI_WZ Distance") +
+  theme_minimal()
+```
+
+Plot accumulated probability distribution group by stimulus type
+
+```{r}
+plot_accumulated_density <- function(df, x, color, title) {
+  p <- ggplot(df, aes(x = !!sym(x), color = !!sym(color))) +
+    stat_ecdf(geom = "step", size = 1) +  
+    labs(title = title, x = "Scores", y = "Cumulative Probability") +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(size = 14, hjust = 0.5),
+      axis.title.x = element_text(size = 12),
+      axis.title.y = element_text(size = 12)
+    )
+  return(p)
+}
+
+plot_density <- function(df, x, color, title) {
+  p <- ggplot(df, aes(x = !!sym(x), color = !!sym(color))) +
+    geom_density(aes(y = ..count..), fill = "grey40", alpha = 0.5) +
+    #stat_ecdf(geom = "step", size = 1) +  
+    labs(title = title, x = "Scores", y = "Cumulative Probability") +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(size = 14, hjust = 0.5),
+      axis.title.x = element_text(size = 12),
+      axis.title.y = element_text(size = 12)
+    )
+  return(p)
+}
+```
+
+```{r, fig.width=13}
+p1 <- plot_density(df_prp_both, "ICI_YX_rating_pre_norm", "stimulus_type_X_Y", "Density\n of Pre-Rating")
+p2 <- plot_density(df_prp_both, "ICI_YX_dist_pre_norm", "stimulus_type_X_Y", "Density \n of Pre-Distance")
+
+grid.arrange(p1, p2, ncol=2)
+```
+
+```{r, fig.width=13}
+p1 <- plot_accumulated_density(df_prp_both, "ICI_YX_rating_pre_norm", "stimulus_type_X_Y", "Cumulative Density\n of Pre-Rating")
+p2 <- plot_accumulated_density(df_prp_both, "ICI_YX_dist_pre_norm", "stimulus_type_X_Y", "Cumulative Density \n of Pre-Distance")
+
+grid.arrange(p1, p2, ncol=2)
+```
+```{r}
+p1 <- plot_density(df_prp_both, "ICI_YX_rating_pre_norm", "stimulus_X_Y", "Density of Pre-Rating")
+
+grid.arrange(p1, ncol=1)
+
+p1 <- plot_density(df_prp_both, "ICI_YX_dist_pre_norm", "stimulus_X_Y", "Density of Pre-Distance")
+
+grid.arrange(p1, ncol=1)
+
+```
+
+
+```{r}
+p1 <- plot_accumulated_density(df_prp_both, "ICI_YX_rating_pre_norm", "stimulus_X_Y", "Cumulative Density of Pre-Rating")
+
+grid.arrange(p1, ncol=1)
+
+p1 <- plot_accumulated_density(df_prp_both, "ICI_YX_dist_pre_norm", "stimulus_X_Y", "Cumulative Density of Pre-Distance")
+
+grid.arrange(p1, ncol=1)
+
+```
+
+```{r}
+summary(aov(df_prp_both$ICI_YX_rating_pre_norm ~ df_prp_both$stimulus_type_X_Y))
+
+```
+
+### Normality test
+
+Test for normality using Shapiro-Wilk Test for each index. They seems normal.
+
+```{r}
+shapiro.test(df_prp_both$ICI_YX_rating_pre_norm)
+
+shapiro.test(df_prp_both$ICI_YX_dist_pre_norm)
+
+shapiro.test(df_prp_both$ICI_YX_rating_post_norm)
+
+shapiro.test(df_prp_both$ICI_YX_dist_post_norm)
+```
+
+### Correlations
+
+```{r}
+df_shorted_name <- df_prp_both %>%
+  mutate(rating_pre = ICI_YX_rating_pre_norm,
+         rating_post = ICI_YX_rating_post_norm,
+         distance_pre = ICI_YX_dist_pre_norm,
+         distance_post = ICI_YX_dist_post_norm)
+  
+selected_columns <- df_shorted_name[, c('anxiety', 'stress', 'depression', 'Sex_0', 'age', 'rating_pre', 'rating_post', 'distance_pre', 'distance_post')]
+
+cor_matrix <- cor(selected_columns, use = "complete.obs")
+cor_matrix
+```
+
+```{r}
+# Plot the heatmap using corrplot
+corrplot(cor_matrix, method = "color", tl.col = "black", tl.srt = 45, 
+         addCoef.col = "black", number.cex = 0.7, col = colorRampPalette(c("blue", "white", "red"))(200),
+         title = "Correlation Heatmap", mar = c(0, 0, 1, 0))
+```
+
+### Assign styles
+
+```{r}
+# Calculate the SD for Pre and define participants' styles
+rating_quantile <- quantile(df_prp_both$ICI_YX_rating_pre_norm, c(1/3, 2/3))
+dist_quantile <- quantile(df_prp_both$ICI_YX_dist_pre_norm, c(1/3, 2/3))
+
+df_prp_both <- df_prp_both %>%
+  mutate(# rating
+         sd_pre_rating = sd(ICI_YX_rating_pre_norm, na.rm = TRUE),
+         mean_pre_rating = mean(ICI_YX_rating_pre_norm, na.rm = TRUE),
+         style_rating = case_when(
+           #ICI_YX_rating_pre_norm > mean_pre_rating + sd_pre_rating ~ "Competitive",
+           #ICI_YX_rating_pre_norm < mean_pre_rating - sd_pre_rating ~ "Facilitative",
+           ICI_YX_rating_pre_norm > rating_quantile[2] ~ "Competitive",
+           ICI_YX_rating_pre_norm < rating_quantile[1] ~ "Facilitative",
+           .default = "No-Difference"
+         ),
+         # distance
+         sd_pre_distance = sd(ICI_YX_dist_pre_norm, na.rm = TRUE),
+         mean_pre_distance = mean(ICI_YX_dist_pre_norm, na.rm = TRUE),
+         style_distance = case_when(
+           #ICI_YX_dist_pre_norm > mean_pre_distance + sd_pre_distance ~ "Competitive",
+           #ICI_YX_dist_pre_norm < mean_pre_distance - sd_pre_distance ~ "Facilitative",
+           ICI_YX_dist_pre_norm > dist_quantile[2] ~ "Competitive",
+           ICI_YX_dist_pre_norm < dist_quantile[1] ~ "Facilitative",
+           .default = "No-Difference"
+         ))
+```
+
+How many participants in each style?
+
+```{r}
+df_prp_both %>%
+  group_by(style_rating) %>%
+  summarize(n = n_distinct(subjectID))
+```
+
+```{r}
+df_prp_both %>%
+  group_by(style_distance) %>%
+  summarize(n = n_distinct(subjectID))
+```
+
+## Final Plot
+
+```{r, fig.width=13, fig.height=8}
+# a function to plot ICI
+plot_ICI <- function(df, pre, post, style, title) {
+  # Classify based on the `pre` column
+  df_style <- df %>%
+    mutate(style = .data[[style]])
+  
+  # df_style <- df_style %>% filter(style != 'No-Difference')
+  
+  # Reshape the data
+  df_melted <- df_style %>%
+    select(all_of(c(pre, post, 'group', 'style'))) %>%
+    pivot_longer(cols = all_of(c(pre, post)), names_to = "flip", values_to = "value") %>%
+    mutate(flip = recode(flip, !!sym(pre) := "Pre", !!sym(post) := "Post"))
+  
+  # Order the levels
+  df_melted$flip <- factor(df_melted$flip, levels = c("Pre", "Post"))
+
+  # Summarize the data to calculate mean and 68% confidence interval
+  df_summary <- df_melted %>%
+    group_by(group, style, flip) %>%
+    summarize(
+      mean_value = mean(value, na.rm = TRUE),
+      se = sd(value, na.rm = TRUE) / sqrt(n()), 
+      ci_68 = se * qnorm(0.84),   # Approx 68% CI (1 standard error)
+      .groups = "drop"
+    )
+  
+  # Plot using ggplot2 with error bars
+  g <- ggplot(df_summary, aes(x = flip, y = mean_value, color = group, group = group)) +
+    geom_point(size = 2) +  # Increase point size
+    geom_line(linewidth = 1) +  # Use linewidth for the main lines
+    geom_errorbar(aes(ymin = mean_value - ci_68, ymax = mean_value + ci_68), width = 0.05, linewidth = .8) +  # Error bars with thinner lines
+    facet_wrap(~style, scales = "fixed", nrow = 1) +  # Use "fixed" for shared y-axis
+    labs(title = title, y = "ICI", x = "") +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),  # Adjust title size
+      axis.title = element_text(size = 14),  # Axis title size
+      axis.text = element_text(size = 12),   # Axis text size
+      strip.text = element_text(size = 14),  # Facet title size
+      legend.position = "right",
+      legend.text = element_text(size = 12),  # Adjust legend text size
+      panel.grid.major.x = element_blank(),  # Remove major vertical grid lines
+      panel.grid.minor.x = element_blank(),  # Remove minor vertical grid lines
+      panel.grid.major.y = element_line(color = "lightgrey", linewidth = 0.1),  # Add major horizontal grid lines
+      panel.grid.minor.y = element_blank(),  # Remove minor horizontal grid lines
+      panel.spacing = unit(1, "lines"),  # Tighten space between panels
+      axis.line.x = element_line(color = "black"),  # Add x-axis line
+      axis.line.y.left = element_line(color = "black")  # Left y-axis
+    ) +
+    scale_color_manual(values = c("blue", "orange")) 
+
+  # Display the plot
+  print(g)
+}
+
+# Example usage
+plot_ICI(df_prp_both, 'ICI_YX_rating_pre_norm', 'ICI_YX_rating_post_norm', 'style_rating', 'Normalized ICI-YX Ratings')
+plot_ICI(df_prp_both, 'ICI_YX_dist_pre_norm', 'ICI_YX_dist_post_norm', 'style_distance', 'Normalized ICI-YX Distances')
+
+```
+## Convert data to a long format
+```{r}
+df_prp_long <- df_prp_both %>%
+  select(subjectID, group, style_rating, style_distance, ICI_YX_rating_pre_norm, ICI_YX_rating_post_norm, ICI_YX_dist_pre_norm, ICI_YX_dist_post_norm) %>%
+  pivot_longer(cols = c(ICI_YX_rating_pre_norm, ICI_YX_rating_post_norm, ICI_YX_dist_pre_norm, ICI_YX_dist_post_norm), names_to = "Index", values_to = "value") 
+# save to CSV
+write_csv(df_prp_long, "./exp4-ICI.csv")
+```
+
+```{r}
+```
+
+# Discussion
+
+# References
