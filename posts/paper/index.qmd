@@ -61,7 +61,7 @@ Both groups completed additional probe trials in which Cues A, B, X, and Y were 
 
 1.  **Distance.** A key behavioral measure was how close participants positioned themselves (or their avatar) to the anticipated outcome location on each trial. By standing near the center when they predicted coins (to maximize reward) or retreating toward the edge if they expected a bomb (to avoid penalty), participants generated a continuous “distance” metric that captured their outcome expectations in real time. Shorter distances indicated a higher belief in receiving coins, whereas larger distances pointed to a strong expectation of bombs.
 
-2.  **Ratings.** In addition to the distance measure, participants periodically provided explicit numeric ratings of how likely they believed it was that the cue in question predicted coins (as opposed to bombs). After each trial—or at defined “probe” trials—participants were shown a rating scale (for instance, 0 to  10) and indicated how confident they were that the current cue would lead to a coin outcome. These ratings supplemented the distance data by revealing learners’ conscious expectations about each cue’s predictive value.
+2.  **Ratings.** In addition to the distance measure, participants periodically provided explicit numeric ratings of how likely they believed it was that the cue in question predicted coins (as opposed to bombs). After each trial—or at defined “probe” trials—participants were shown a rating scale (for instance, 0 to 10) and indicated how confident they were that the current cue would lead to a coin outcome. These ratings supplemented the distance data by revealing learners’ conscious expectations about each cue’s predictive value.
 
 **Anxiety, Depression, and Stress Measures.**
 
@@ -292,11 +292,13 @@ df_prp_both <- df_prp_both %>% filter(A_before_rating > B_before_rating,
 df_prp_both <- df_prp_both %>% filter(W_before_rating < Z_before_rating)
 
 ```
+
 ```{r}
 df_prp_both %>%
   group_by(group) %>%
   summarize(n = n_distinct(subjectID))
 ```
+
 ## Normalized Index
 
 ```{r}
@@ -416,6 +418,7 @@ p2 <- plot_accumulated_density(df_prp_both, "ICI_YX_dist_pre_norm", "stimulus_ty
 
 grid.arrange(p1, p2, ncol=2)
 ```
+
 ```{r}
 p1 <- plot_density(df_prp_both, "ICI_YX_rating_pre_norm", "stimulus_X_Y", "Density of Pre-Rating")
 
@@ -426,7 +429,6 @@ p1 <- plot_density(df_prp_both, "ICI_YX_dist_pre_norm", "stimulus_X_Y", "Density
 grid.arrange(p1, ncol=1)
 
 ```
-
 
 ```{r}
 p1 <- plot_accumulated_density(df_prp_both, "ICI_YX_rating_pre_norm", "stimulus_X_Y", "Cumulative Density of Pre-Rating")
@@ -588,7 +590,9 @@ plot_ICI(df_prp_both, 'ICI_YX_rating_pre_norm', 'ICI_YX_rating_post_norm', 'styl
 plot_ICI(df_prp_both, 'ICI_YX_dist_pre_norm', 'ICI_YX_dist_post_norm', 'style_distance', 'Normalized ICI-YX Distances')
 
 ```
+
 ## Convert data to a long format
+
 ```{r}
 df_prp_long <- df_prp_both %>%
   select(subjectID, group, style_rating, style_distance, ICI_YX_rating_pre_norm, ICI_YX_rating_post_norm, ICI_YX_dist_pre_norm, ICI_YX_dist_post_norm) %>%
