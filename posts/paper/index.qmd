@@ -91,7 +91,15 @@ if(!require('gridExtra')) {
   library(gridExtra)
 }
 
+#install.packages("car")
+library(car)
 library(corrplot)
+#install.packages("effectsize")
+library(effectsize)
+#install.packages("afex")
+library(afex)
+#install.packages("emmeans")
+library(emmeans)
 ```
 
 Import Data
@@ -196,7 +204,9 @@ We want to use an average of pre reversal and post reversal. We select 6, 7,8 fo
 ```{r}
 df_prp_focus <- df_prp_raw %>%
   filter(rep %in% c(6, 7, 8, 10, 11, 12)) %>%
-  mutate(rep = recode(rep, `6` = 'before', `7` = 'before', `8` = 'before', `10` = 'after', `11` = 'after', `12` = 'after')) 
+  mutate(rep = dplyr::recode(as.numeric(rep),
+                      `6` = 'before', `7` = 'before', `8` = 'before',
+                      `10` = 'after', `11` = 'after', `12` = 'after'))
 
 df_prp <- df_prp_focus %>%
   group_by(subjectID, cue, rep) %>%
@@ -481,6 +491,43 @@ corrplot(cor_matrix, method = "color", tl.col = "black", tl.srt = 45,
          addCoef.col = "black", number.cex = 0.7, col = colorRampPalette(c("blue", "white", "red"))(200),
          title = "Correlation Heatmap", mar = c(0, 0, 1, 0))
 ```
+Calculate p-values for the correlation matrix
+```{r}
+vars <- names(selected_columns)
+n <- length(vars)
+p_matrix <- matrix(NA, n, n)
+colnames(p_matrix) <- rownames(p_matrix) <- vars
+
+for (i in 1:n) {
+  for (j in 1:n) {
+    test <- cor.test(selected_columns[[i]], selected_columns[[j]], method = "pearson")
+    p_matrix[i, j] <- test$p.value
+  }
+}
+p_matrix
+```
+#### Conclusion
+**Correlation with Rating (Pre-manipulation)**
+Anxiety was not significantly correlated with participants’ pre-manipulation ratings, r(315) = -0.08, p = .18.
+
+Stress was not significantly correlated with pre-manipulation ratings, r = -0.07, p = .19.
+
+Depression was not significantly correlated with pre-manipulation ratings, r = -0.06, p = .29.
+
+Sex (coded as 0) was not significantly correlated with pre-manipulation ratings, r = 0.05, p = .39.
+
+Age was not significantly correlated with pre-manipulation ratings, r = 0.05, p = .39.
+
+**Correlation with Distance (Pre-manipulation)**
+Anxiety was marginally negatively correlated with distance to the object, r = -0.10, p = .07.
+
+Stress was significantly negatively correlated with distance, r = -0.11, p = .04.
+
+Depression was not significantly correlated with distance, r = -0.09, p = .11.
+
+Sex was not significantly correlated with distance, r = 0.07, p = .20.
+
+Age was not significantly correlated with distance, r = 0.05, p = .39.
 
 ### Assign styles
 
@@ -525,8 +572,97 @@ df_prp_both %>%
   group_by(style_distance) %>%
   summarize(n = n_distinct(subjectID))
 ```
+### One-way ANOVA test for normalized pre-manipulation ratings
+Check assumptions: normality & homogeneity of variances
 
-## Final Plot
+1. Shapiro-Wilk (normality within each group)
+
+```{r}
+by(df_prp_both$ICI_YX_rating_pre_norm, df_prp_both$style_rating, shapiro.test)
+```
+All groups violate the normality assumption, the p-values are all < 0.05.
+
+2. Levene’s test (homogeneity of variance)
+
+```{r}
+df_prp_both$style_rating_factor <- as.factor(df_prp_both$style_rating)
+
+leveneTest(ICI_YX_rating_pre_norm ~ style_rating_factor, data = df_prp_both)
+```
+The p-value is < 0.05, indicating that the variances are not equal across groups.
+
+Run one-way ANOVA
+```{r}
+anova_model <- aov(ICI_YX_rating_pre_norm ~ style_rating, data = df_prp_both)
+summary(anova_model)
+
+eta_squared(anova_model)
+```
+A one-way between-subjects ANOVA was conducted to examine the effect of rating style (Competitive, Facilitative, No-Difference) on participants’ normalized pre-manipulation ratings index. The results revealed a statistically significant effect of rating style on normalized rating indexes, F(2, 312) = 376.00, p < .001. The effect size was large, η² = .71, 95% CI [.67, 1.00], indicating that approximately 71% of the variance in normalized pre-manipulation rating indexes can be attributed to rating style.
+
+### One-way ANOVA test for normalized pre-manipulation distance
+Check assumptions: normality & homogeneity of variances
+
+1. Shapiro-Wilk (normality within each group)
+
+```{r}
+by(df_prp_both$ICI_YX_dist_pre_norm, df_prp_both$style_distance, shapiro.test)
+```
+All groups violate the normality assumption, the p-values are all < 0.05.
+
+2. Levene’s test (homogeneity of variance)
+
+```{r}
+df_prp_both$style_distance_factor <- as.factor(df_prp_both$style_distance)
+
+leveneTest(ICI_YX_dist_pre_norm ~ style_distance_factor, data = df_prp_both)
+```
+The p-value is < 0.05, indicating that the variances are not equal across groups.
+
+Run one-way ANOVA
+```{r}
+anova_model <- aov(ICI_YX_dist_pre_norm ~ style_distance, data = df_prp_both)
+summary(anova_model)
+
+eta_squared(anova_model)
+```
+A one-way between-subjects ANOVA was conducted to examine the effect of distance style (Competitive, Facilitative, No-Difference) on participants’ normalized pre-manipulation distance index. The results revealed a statistically significant effect of distance style on distance indexes, F(2, 312) = 359.3, p < .001. The effect size was large, η² = .70, 95% CI [.66, 1.00], indicating that approximately 71% of the variance in normalized pre-manipulation distance index can be attributed to distance style.
+
+### Two-way ANOVA test for normalized post-manipulation ratings
+
+```{r}
+df_prp_both <- df_prp_both %>%
+  mutate(rating_change = ICI_YX_rating_post_norm - ICI_YX_rating_pre_norm)
+
+anova_change <- aov(rating_change ~ style_rating * group, data = df_prp_both)
+summary(anova_change)
+```
+A two-way between-subjects ANOVA was conducted to examine the effects of rating style (Competitive, Facilitative, No-Difference) and group (Control, Experimental) on the change in normalized rating indexes from pre- to post-manipulation. 
+
+There was a significant main effect of rating style, F(2, 309) = 49.28, p < .001, η² = .24, indicating that the amount of change differed significantly across rating styles.
+
+There was no significant main effect of group, F(1, 309) = 0.03, p = .859, suggesting that, overall, control and experimental groups did not differ in change scores.
+
+However, there was a significant interaction between rating styles and group, F(2, 309) = 3.30, p = .038, indicating that the effect of group on rating index change varied depending on the rating style.
+
+### Two-way ANOVA test for normalized post-manipulation distance
+
+```{r}
+df_prp_both <- df_prp_both %>%
+  mutate(dist_change = ICI_YX_dist_post_norm - ICI_YX_dist_pre_norm)
+
+anova_change <- aov(dist_change ~ style_distance * group, data = df_prp_both)
+summary(anova_change)
+```
+A two-way between-subjects ANOVA was conducted to examine the effects of distance style (Competitive, Facilitative, No-Difference) and group (Control, Experimental) on participants' normalized distance index.
+
+There was a significant main effect of distance style, F(2, 309) = 72.95, p < .001, η² = .32, indicating that average distance index significantly differed across styles.
+
+There was no significant main effect of group, F(1, 309) = 0.38, p = .538, suggesting that control and experimental groups did not differ overall in distance index.
+
+The interaction between distance style and group was marginally significant, F(2, 309) = 2.52, p = .082, η² ≈ .01, indicating a potential trend that the effect of group may differ depending on distance style, though this did not reach conventional levels of statistical significance.
+
+## Plot for Interactions
 
 ```{r, fig.width=13, fig.height=8}
 # a function to plot ICI
@@ -541,7 +677,7 @@ plot_ICI <- function(df, pre, post, style, title) {
   df_melted <- df_style %>%
     select(all_of(c(pre, post, 'group', 'style'))) %>%
     pivot_longer(cols = all_of(c(pre, post)), names_to = "flip", values_to = "value") %>%
-    mutate(flip = recode(flip, !!sym(pre) := "Pre", !!sym(post) := "Post"))
+    mutate(flip = dplyr::recode(flip, !!sym(pre) := "Pre", !!sym(post) := "Post"))
   
   # Order the levels
   df_melted$flip <- factor(df_melted$flip, levels = c("Pre", "Post"))
